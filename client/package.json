@@ -1,0 +1,26 @@
+{
+  "name": "IsleOfRavens",
+  "version": "0.0.1",
+  "description": "Game Of Thrones LCG Stats",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Brad Norman (digitalgenesis@gmail.com)",
+  "license": "ISC",
+  "dependencies": {
+    "grunt-html2js": "^0.3.8",
+    "jshint-stylish": "^2.2.1",
+    "load-grunt-tasks": "^3.5.2",
+    "time-grunt": "^1.4.0",
+    "wiredep": "^4.0.0"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-uglify": "^3.0.1",
+    "grunt-ng-annotate": "^3.0.0"
+  }
+}

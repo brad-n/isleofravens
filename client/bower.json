@@ -1,0 +1,25 @@
+{
+  "name": "isleofravens",
+  "homepage": "https://github.com/brad-n/isleofravens",
+  "authors": [
+    "Brad Norman <digitalgenesis@gmail.com>"
+  ],
+  "description": "Game of Thrones LCG Stats",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.4",
+    "ng-tour": "ng-route#*",
+    "restangular": "^1.6.1",
+    "angular-route": "^1.6.4",
+    "bootstrap-css": "^3.3.7"
+  }
+}
