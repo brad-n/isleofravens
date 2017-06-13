@@ -113,7 +113,7 @@ class Tournament extends Base {
 		$result = $this->getAll($sql);
 		
 		foreach($result as $key => $round){
-			if($round['winner_id'] = $player_id){
+			if($round['winner_id'] == $player_id){
 				$result[$key]['opponent'] = new Player($GLOBALS['db'], $round['loser_id']);
 			}else{
 				$result[$key]['opponent'] = new Player($GLOBALS['db'], $round['winner_id']);
