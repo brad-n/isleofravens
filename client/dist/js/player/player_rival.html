@@ -1,0 +1,16 @@
+<div>
+	<h3>Rivals</h3>
+	<table ng-if="player.rivals.length > 0" class="table table-responsive">
+		<tr>
+			<td>Rival</td>
+			<td>Win</td>
+			<td>Loss</td>
+		</tr>
+		<tr ng-repeat="rival in player.rivals">
+			<td><a href="player/{{rival.loser_id}}">{{rival.name}} ({{rival.elo}})</a></td>
+			<td>{{rival.wins}}
+			<td>{{rival.rounds_played - rival.wins}}</td>
+		</tr>
+	</table>
+	<i ng-if="player.rivals.length < 1">Play more matches.  BE the enemy.</i>
+</div>

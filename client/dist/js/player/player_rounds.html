@@ -1,0 +1,68 @@
+<div class="text-center">
+	<a href="javascript:void(0);" class="collapsed" data-toggle="collapse" data-target="#collapseRounds-{{tid}}" aria-expanded="false" aria-controls="collapseExample">
+		<span class="if-collapsed" ng-click="loadPlayerRounds()">Show Rounds</span>
+		<span class="if-not-collapsed">Hide Rounds</span>
+	</a>
+	<div class="collapse text-left" id="collapseRounds-{{tid}}">
+		<table class="table table-response">
+			<tr>
+				<td>Round#</td>
+				<td>Result</td>
+				<td>End Eol</td>
+				<td>Start Eol</td>
+				<td>Change</td>
+				<td>Opponent</td>
+				<td>End Eol</td>
+				<td>Start Eol</td>
+				<td>Change</td>
+			</tr>
+			<tbody>
+				<tr ng-repeat="r in rounds">
+					<td>{{r.round_number}}</td>
+					<td>
+						<span ng-if="r.winner_id == player.player_id" style="color:green">Win</span>
+						<span ng-if="r.winner_id != player.player_id" style="color:red">Loss</span>
+					</td>
+					<td>
+						<span ng-if="r.player_1_id == player.player_id">{{r.player_1_end_elo}}</span>
+						<span ng-if="r.player_1_id != player.player_id">{{r.player_2_end_elo}}</span>
+					</td>
+					<td>
+						<span ng-if="r.player_1_id == player.player_id">{{r.player_1_start_elo}}</span>
+						<span ng-if="r.player_1_id != player.player_id">{{r.player_2_start_elo}}</span>
+					</td>
+					<td>
+						<span ng-if="r.player_1_id == player.player_id">
+							<span ng-if="r.player_1_end_elo-r.player_1_start_elo > 0" style="color:green">{{r.player_1_end_elo-r.player_1_start_elo}}</span>
+							<span ng-if="r.player_1_end_elo-r.player_1_start_elo <= 0" style="color:red">{{r.player_1_end_elo-r.player_1_start_elo}}</span>
+						</span>
+						<span ng-if="r.player_2_id == player.player_id">
+							<span ng-if="r.player_2_end_elo-r.player_2_start_elo > 0" style="color:green">{{r.player_2_end_elo-r.player_2_start_elo}}</span>
+							<span ng-if="r.player_2_end_elo-r.player_2_start_elo <= 0" style="color:red">{{r.player_2_end_elo-r.player_2_start_elo}}</span>
+						</span>
+					</td>
+					<td><a href="player/{{r.opponent.player_id}}">{{r.opponent.name}}</a> ({{r.opponent.elo}})</td>
+					<td>
+						<span ng-if="r.player_1_id == player.player_id">{{r.player_2_end_elo}}</span>
+						<span ng-if="r.player_1_id != player.player_id">{{r.player_1_end_elo}}</span>
+					</td>
+					<td>
+						<span ng-if="r.player_1_id == player.player_id">{{r.player_2_start_elo}}</span>
+						<span ng-if="r.player_1_id != player.player_id">{{r.player_1_start_elo}}</span>
+					</td>
+					<td>
+						<span ng-if="r.player_1_id == player.player_id">
+							<span ng-if="r.player_2_end_elo-r.player_2_start_elo > 0" style="color:green">{{r.player_2_end_elo-r.player_2_start_elo}}</span>
+							<span ng-if="r.player_2_end_elo-r.player_2_start_elo <= 0" style="color:red">{{r.player_2_end_elo-r.player_2_start_elo}}</span>
+						</span>
+						<span ng-if="r.player_2_id == player.player_id">
+							<span ng-if="r.player_1_end_elo-r.player_1_start_elo > 0" style="color:green">{{r.player_1_end_elo-r.player_1_start_elo}}</span>
+							<span ng-if="r.player_1_end_elo-r.player_1_start_elo <= 0" style="color:red">{{r.player_1_end_elo-r.player_1_start_elo}}</span>
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+ 	</div>
+ 	<hr></hr>
+</div>
