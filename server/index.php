@@ -53,9 +53,9 @@ $app->post('/player/search/', function (Request $request, Response $response) {
 		foreach($players as $player){
 			$player->nemeses = $player->getPlayerNemeses();
 			$player->rivals = $player->getPlayerRivals();
-			$player->tournaments = $tObj->getPlayerTournaments($player);
+			//$player->tournaments = $tObj->getPlayerTournaments($player);
 			foreach($player->tournaments as $tournament){
-				$tournament->entry = $tournament->roster->findPlayerInRoster($player);
+				//$tournament->entry = $tournament->roster->findPlayerInRoster($player);
 			}
 		}
 		
@@ -64,24 +64,64 @@ $app->post('/player/search/', function (Request $request, Response $response) {
 		
 });
 
+/*
+ * Tournament Specific routes
+ */
+$app->get('/tournament/rounds/{tournamentID}[/{playerID}]', function (Request $request, Response $response) {
+	
+	$tid = $request->getAttribute('tournamentID');
+	$pid = $request->getAttribute('playerID');
+
+	if($pid){
+		$tObj = new Tournament($GLOBALS['db']);
+		$result = $tObj->getPlayerRounds($tid, $pid);
+	}else{
+		$result = new Tournament($GLOBALS['db'], $tid);
+	}
+	
+	
+	return return_json($result);
+	
+});
+	
+	//tournament/rounds/'+tournament_id+'/'+player_id
+
+/*
+ * Player Specific routes
+ */
 $app->get('/player/{playerID}', function (Request $request, Response $response) {
 		
 	$id = $request->getAttribute('playerID');
 	$player= new Player($GLOBALS['db'], $id);
-	$tObj = new Tournament($GLOBALS['db']);
 	
 	$player->nemeses = $player->getPlayerNemeses();
 	$player->rivals = $player->getPlayerRivals();
-	
-	$player->tournaments = $tObj->getPlayerTournaments($player);
-	foreach($player->tournaments as $key => $tournament){
-		$tournament->entry = $tournament->roster->findPlayerInRoster($player);
-	}
 	
 	return return_json($player);
 	
 });
 
+$app->get('/player/top/{count}', function (Request $request, Response $response) {
+	
+	$count= $request->getAttribute('count');
+	$player = new Player($GLOBALS['db'], $id);
+	
+	$players = $player->getTopPlayers($count);
+	
+	return return_json($players);
+	
+});
+
+$app->get('/player/tournaments/{player_id}', function (Request $request, Response $response) {
+		
+	$id = $request->getAttribute('player_id');
+	$player = new Player($GLOBALS['db'], $id);
+
+	$tObj = new Tournament($GLOBALS['db']);
+	$tournaments = $tObj->getPlayerTournaments($player);
+	return return_json($tournaments);
+		
+});
 
 
 function return_json($data){

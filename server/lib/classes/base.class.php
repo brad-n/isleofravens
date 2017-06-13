@@ -3,10 +3,11 @@
 class Base {
 	
 	protected $db;
-	public $table;
+	private $fields;
+	private $table;
 	
 	public $id;
-	public $fields;
+	
 
 	
 	public function setDB(&$db){

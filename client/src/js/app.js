@@ -7,15 +7,15 @@ app.run(['$rootScope', function(rs){
 
 app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     'use strict';
-    //$locationProvider.html5Mode(true);
+    $locationProvider.html5Mode(true);
     $routeProvider
 
 	    .when("/", {
-	    	templateUrl: "src/search/main.html",
+	    	templateUrl: "js/search/main.html",
 	        controller: 'MainController',
 	    })
 	    .when("/player/:playerID", {
-	    	templateUrl: "src/search/main.html",
+	    	templateUrl: "js/search/main.html",
 	        controller: 'MainController',
 	    })
         .otherwise({redirectTo: "/"});

@@ -1,0 +1,16 @@
+<div>
+	<h3>Nemeses</h3>
+	<table ng-if="player.nemeses.length > 0" class="table table-responsive">
+		<tr>
+			<td>Nemesis</td>
+			<td>Win</td>
+			<td>Loss</td>
+		</tr>
+		<tr ng-repeat="nemesis in player.nemeses">
+			<td><a href="player/{{nemesis.winner_id}}">{{nemesis.name}} ({{nemesis.elo}})</a></td>
+			<td>{{nemesis.rounds_played-nemesis.defeats}}
+			<td>{{nemesis.defeats}}</td>
+		</tr>
+	</table>
+	<i ng-if="player.nemeses.length < 1">Play more matches.  Make more enemies.</i>
+</div>

@@ -22,7 +22,8 @@ class TournamentRoster extends Base {
 			$roster = $this->getAll("SELECT * FROM tournament_roster WHERE tournament_id = '".$this->tournament_id."'");
 			
 			foreach($roster as $entry){
-				array_push($this->tournament_players, new TournamentPlayer($this->db, $this->tournament_id, new Player($db, $entry['player_id'])));
+				$p = new Player($db, $entry['player_id']);
+				array_push($this->tournament_players, new TournamentPlayer($this->db, $this->tournament_id, $p));
 			}
 			
 			//now inject our BYE (maybe SUPERBYE?)

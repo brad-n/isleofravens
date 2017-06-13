@@ -11,20 +11,22 @@
     <title>Isle of Ravens -- AGoT Stats</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="src/config.js"></script>
+	
 	<base id="base">
 	
 	<script>
 	if( window.location.host.match(/isleofravens.com/) ){
 		document.getElementById('base').href = '/';
 	}else{
-		document.getElementById('base').href = '/isleofravens/client/';
+		document.getElementById('base').href = '/isleofravens/client/src/';
 	}
 	</script>
 	
+  <!-- build:css css/vendor.css -->
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/bootstrap-css/css/bootstrap.min.css" />
   <!-- endbower -->
+  <!-- endbuild -->
 </head>
 <body>
 
@@ -33,23 +35,35 @@
 	<div ng-view></div>
 	
 </div>
-
+  <!-- build:js js/vendor.js -->
   <!-- bower:js -->
-  <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
   <script src="bower_components/angular-scroll/angular-scroll.js"></script>
+  <script src="bower_components/ng-tour/ngTour.js"></script>
   <script src="bower_components/lodash/lodash.js"></script>
   <script src="bower_components/restangular/dist/restangular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/bootstrap-css/js/bootstrap.min.js"></script>
   <!-- endbower -->
+  <!-- endbuild -->
   
-
-  <script src="src/app.js"></script>
-  <script src="src/api/api.service.js"></script>
-  <script src="src/search/main.js"></script>
+  <!-- build:js({.tmp,src}) js/scripts.js -->
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/api/api.service.js"></script>
+  <script src="js/search/main.js"></script>
+  
+  <script src="js/player/top_players.directive.js"></script>
+  
+  <script src="js/player/player_details.directive.js"></script>
+  <script src="js/player/player_nemesis.directive.js"></script>
+  <script src="js/player/player_rival.directive.js"></script>
+  <script src="js/player/player_tournaments.directive.js"></script>
+  <script src="js/player/player_rounds.directive.js"></script>
+  <!-- endbuild -->
   
   
   

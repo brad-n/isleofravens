@@ -86,18 +86,12 @@ class Tournament extends Base {
 	
 	public function getPlayerTournaments(Player $player){
 		
-		$rObj = new TournamentRoster($this->db);
-		$rosters = $rObj->searchRosterByPlayer($player);
-		if(is_array($rosters)){
-			foreach($rosters as $roster){
-				$t = new Tournament($this->db, $roster->tournament_id);
-				$t->setValue('roster', $roster);
-				$t->getRounds();
-				$return[] = $t;
-			}
-			
-			return $return;
-		}
+		$sql = "select * FROM tournaments as t
+				INNER JOIN tournament_roster as tr ON t.tournament_id = tr.tournament_id
+				WHERE tr.player_id = '".$player->player_id."' ORDER BY date_end desc";
+		$result = $this->getAll($sql);
+
+		return $result;
 		
 	}
 	
@@ -110,6 +104,25 @@ class Tournament extends Base {
 	public function getRounds(){
 		$this->rounds = new TournamentRounds($this->db, $this->tournament_id);
 		$this->rounds->getRounds();
+	}
+	
+	public function getPlayerRounds($tournament_id, $player_id){
+		
+		$sql = "SELECT * FROM tournament_rounds WHERE (winner_id = '".$player_id."' OR loser_id = '".$player_id."') AND tournament_id = '".$tournament_id."' ORDER BY round_number asc";
+		error_log($sql);
+		$result = $this->getAll($sql);
+		
+		foreach($result as $key => $round){
+			if($round['winner_id'] = $player_id){
+				$result[$key]['opponent'] = new Player($GLOBALS['db'], $round['loser_id']);
+			}else{
+				$result[$key]['opponent'] = new Player($GLOBALS['db'], $round['winner_id']);
+			}
+			
+		}
+		error_log(print_r($result,1));
+		return $result;
+		
 	}
 	
 	

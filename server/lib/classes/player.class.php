@@ -75,7 +75,7 @@ class Player extends Base {
 	}
 	
 	function getPlayerByName($name){
-		$sql = "SELECT * FROM `".$this->table."` WHERE name = '".$name."'";
+		$sql = "SELECT * FROM `".$this->table."` WHERE name = '".$this->__sanitize($name)."'";
 		return $this->get($sql);
 	}
 	
@@ -103,6 +103,17 @@ class Player extends Base {
 				HAVING rounds_played > 1 AND wins >= (rounds_played - wins)
 				ORDER BY wins desc, rounds_played asc
 				LIMIT 0,3";
+		$result = $this->getAll($sql);
+		
+		return $result;
+		
+	}
+	
+	public function getTopPlayers($top_x){
+		$sql = "SELECT *, 
+					(SELECT faction FROM tournament_roster as tr WHERE player_id = players.player_id GROUP BY faction ORDER BY count(faction) desc limit 0,1) as most_played_faction
+				FROM players
+				ORDER BY elo desc LIMIT 0, ".$this->__sanitize($top_x);
 		$result = $this->getAll($sql);
 		
 		return $result;

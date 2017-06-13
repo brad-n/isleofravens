@@ -1,0 +1,43 @@
+<div>
+	<div class="panel-heading">
+		<h3 class="panel-title"><a href="player/{{player.player_id}}">{{player.name}}</a> ({{player.elo}})</h3>
+	</div>
+  	<div class="panel-body">
+   		<div class="row">
+   			<div class="col-xs-6 col-md-3">
+   				<div class="col-xs-12"><b>Entries</b></div>
+   				<div class="col-xs-12">{{player.entries}}</div>
+   			</div>
+			<div class="col-xs-6 col-md-3">
+   				<div class="col-xs-12"><b>Win</b></div>
+   				<div class="col-xs-12">{{player.wins}}</div>
+   			</div>
+			<div class="col-xs-6 col-md-3">
+   				<div class="col-xs-12"><b>Loss</b></div>
+   				<div class="col-xs-12">{{player.losses}}</div>
+   			</div>
+			<div class="col-xs-6 col-md-3">
+   				<div class="col-xs-12"><b>Win%</b></div>
+   				<div class="col-xs-12">{{ ((player.wins/(player.wins+player.losses))*100).toFixed(2) }}%</div>
+   			</div>
+   		</div>
+		   		
+   		<div class="row">
+   			<div class="col-xs-12 col-md-6">
+   				<player-nemesis player="player"></player-nemesis>
+   			</div>
+		   			
+			<div class="col-xs-12 col-md-6">
+				<player-rival player="player"></player-rival>
+			</div>
+		   			
+		</div>
+		   		
+		   		<div class="row">
+		   			<div class="col-xs-12 text-center">
+						<player-tournaments player="player"></player-tournaments>
+		   			</div>
+		   		</div>
+	 		</div>
+	 		<hr></hr>
+</div>

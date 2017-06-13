@@ -1,0 +1,44 @@
+<div>
+	<a href="javascript:void(0);" class="collapsed" data-toggle="collapse" data-target="#collapseTournaments-{{player.player_id}}" aria-expanded="false" aria-controls="collapseExample">
+		<span class="if-collapsed" ng-click="loadPlayerTournaments()">Show Tournaments</span>
+		<span class="if-not-collapsed">Hide Tournaments</span>
+  	</a>
+	<div class="collapse text-left" id="collapseTournaments-{{player.player_id}}">
+  		<div class="well">
+  			<div class="row" ng-repeat="t in tournaments">
+	  			<h3 class="text-left">{{t.name}}</h3>
+    			
+				<div class="row">
+    				<div class="col-xs-12">
+    					<b>{{t.faction}} {{t.agenda}}</b><br/>
+    					<span ng-if="t.end_elo > 0 && t.end_elo - t.start_elo > 0" style="color:green">{{t.end_elo - t.start_elo}}</span>
+    					<span ng-if="t.end_elo > 0 && t.end_elo - t.start_elo <= 0"style="color:red">{{t.end_elo - t.start_elo}}</span>
+    					<br/>
+    				</div>
+    			</div>
+    			
+				<div class="row">
+		   			<div class="col-xs-6 col-md-3">
+		   				<div class="col-xs-12"><b>End Elo</b></div>
+		   				<div class="col-xs-12">{{t.end_elo}}</div>
+		   			</div>
+					<div class="col-xs-6 col-md-3">
+		   				<div class="col-xs-12"><b>Start Elo</b></div>
+		   				<div class="col-xs-12">{{t.start_elo}}</div>
+		   			</div>
+					<div class="col-xs-6 col-md-3">
+		   				<div class="col-xs-12"><b>Players</b></div>
+		   				<div class="col-xs-12">{{t.player_count}}</div>
+		   			</div>
+					<div class="col-xs-6 col-md-3">
+		   				<div class="col-xs-12"><b>Date</b></div>
+		   				<div class="col-xs-12">{{t.date_end}}</div>
+		   			</div>
+		   		</div>
+		   		<player-rounds tid="t.tournament_id" player="player"></player-rounds>
+		   		
+   			</div>
+  		
+  		</div>
+  	</div>
+</div>

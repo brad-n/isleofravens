@@ -14,6 +14,15 @@ app.factory('Api', ['Restangular', '$rootScope', '$q', '$location', '$http',
 			},
 			loadPlayerByID: function(playerID){
 				return Rest.one('player/'+playerID).get(playerID);
+			},
+			loadTopPlayers: function(topX){
+				return Rest.all('player/top/').get(topX);
+			},
+			loadTournamentsByPlayer: function(player_id){
+				return Rest.all('player/tournaments/').get(player_id);
+			},
+			loadTournamentRoundsByPlayer: function(tournament_id, player_id){
+				return Rest.all('tournament/rounds/'+tournament_id+'/').get(player_id);
 			}
 
 		};
