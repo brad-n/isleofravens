@@ -17,10 +17,10 @@
 			if(this.apiBaseUrl_set) return this.apiBaseUrl_set;
 
 			if( this.hostAndPort().match(/isleofravens.com/) ){
-				this.server='http://app.isleofravens.com';
+				this.server='//app.isleofravens.com';
 				this.basehref="/";
 			}else if( this.hostAndPort().match(/:8888/) || this.host().match(/(localh|127.0.0|0.0.0)/)) {
-                this.server='http://localhost:8888/isleofravens/server/';
+                this.server='//localhost:8888/isleofravens/server/';
                 this.basehref="/isleofravens/client/";
 			}
 
