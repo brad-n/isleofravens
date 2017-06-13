@@ -30,15 +30,6 @@ $app->add(function ($req, $res, $next) {
 });
 		
 		
-
-$app->get('/hello/{name}', function (Request $request, Response $response) {
-	$name = $request->getAttribute('name');
-	$response->getBody()->write("Hello, $name");
-	
-	return $response;
-});
-
-
 $app->post('/player/search/', function (Request $request, Response $response) {
 
 	$body = json_decode($request->getBody());
