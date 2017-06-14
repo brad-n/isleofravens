@@ -19,7 +19,7 @@ class Player extends Base {
 		
 		$this->setDB($db);
 		
-		$this->table = 'players';
+		$this->setTable('players');
 
 		$this->setID('player_id');
 		$this->setFields(array('player_id', 'jp_player_id', 'name', 'elo', 'wins', 'losses', 'titles', 'entries', 'date_created'));
@@ -58,7 +58,7 @@ class Player extends Base {
 	}
 	
 	function getPlayerByID($player_id){
-		$sql = "SELECT * FROM `".$this->table."` WHERE player_id = '".$player_id."'";
+		$sql = "SELECT * FROM `".$this->getTable()."` WHERE player_id = '".$player_id."'";
 		return $this->get($sql);
 	}
 	
@@ -70,12 +70,12 @@ class Player extends Base {
 	}
 	
 	function getPlayerByJPID($jp_player_id){
-		$sql = "SELECT * FROM `".$this->table."` WHERE jp_player_id = '".$jp_player_id."'";
+		$sql = "SELECT * FROM `".$this->getTable()."` WHERE jp_player_id = '".$jp_player_id."'";
 		return $this->get($sql);
 	}
 	
 	function getPlayerByName($name){
-		$sql = "SELECT * FROM `".$this->table."` WHERE name = '".$this->__sanitize($name)."'";
+		$sql = "SELECT * FROM `".$this->getTable()."` WHERE name = '".$this->__sanitize($name)."'";
 		return $this->get($sql);
 	}
 	
