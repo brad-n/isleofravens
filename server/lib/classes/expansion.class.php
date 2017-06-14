@@ -13,7 +13,7 @@ class Expansion extends Base {
 	function __construct(&$db, $expansion_id=null, $expansion_name=null){
 		
 		$this->db = $db;
-		$this->table = 'expansions';
+		$this->setTable('expansions');
 		$this->setID('expansion_id');
 		$this->setFields(array('expansion_id', 'game_id', 'expansion_name'));
 		
@@ -36,12 +36,12 @@ class Expansion extends Base {
 	}
 	
 	function getExpansionByID($id){
-		$sql = "SELECT * FROM `".$this->table."` WHERE expansion_id = '".$id."'";
+		$sql = "SELECT * FROM `".$this->getTable()."` WHERE expansion_id = '".$id."'";
 		return $this->get($sql);
 	}
 	
 	function getExpansionByName($name){
-		$sql = "SELECT * FROM `".$this->table."` WHERE expansion_name = '".$name."'";
+		$sql = "SELECT * FROM `".$this->getTable()."` WHERE expansion_name = '".$name."'";
 		return $this->get($sql);
 	}
 	
