@@ -25,7 +25,7 @@ class TournamentPlayer extends Base {
 		
 		$this->setDB($db);
 		$this->setTable('tournament_roster');
-		$this->id = 'roster_id';
+		$this->setID('roster_id');
 		$this->fields = array('roster_id', 'tournament_id', 'player_id', 'faction', 'agenda','place', 'points', 'wins', 'losses', 'sos', 'esos', 'start_elo', 'end_elo');
 		
 		if($player){

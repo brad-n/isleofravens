@@ -57,7 +57,7 @@ class Tournament extends Base {
 		return $this->get($sql);
 	}
 
-	public function isPlayerInRoster(Player &$player){
+	public function isPlayerInRoster(Player $player){
 		if(!isset($this->roster)){
 			$this->getRoster();
 		}
@@ -120,7 +120,6 @@ class Tournament extends Base {
 			}
 			
 		}
-		error_log(print_r($result,1));
 		return $result;
 		
 	}

@@ -14,6 +14,9 @@ class Base {
 		$this->db = $db;
 	}
 	
+	public function getID(){
+		return $this->id;
+	}
 	public function setID($id){
 		$this->id = $id;
 	}
@@ -116,7 +119,7 @@ class Base {
 		}
 
 		//are we adding or updating?
-		if($this->{$this->id}){
+		if($this->getID()){
 			$sql = "UPDATE ".$this->table." SET ";
 			foreach($this->fields as $field){
 				$sql .= $field." = '".$this->__sanitize($this->{$field})."',";
@@ -131,7 +134,7 @@ class Base {
 			}
 			$sql = substr($sql, 0,-1);
 			mysqli_query($this->db, $sql) or die("Error : <br/>".$sql."<br/>");
-			$this->{$this->id} = mysqli_insert_id($this->db);
+			$this->setID(mysqli_insert_id($this->db));
 			
 			if($this->{$this->id} && method_exists($this, 'onAfterInsert')){
 				$this->onAfterInsert();

@@ -36,7 +36,7 @@ class TournamentRoster extends Base {
 		
 	}
 	
-	public function searchRosterByPlayer(Player &$player){
+	public function searchRosterByPlayer(Player $player){
 		
 		$result = $this->getAll("SELECT * FROM tournament_roster WHERE player_id = '".$player->player_id."'");
 		
@@ -54,7 +54,7 @@ class TournamentRoster extends Base {
 	
 	
 	
-	public function playerInRoster(Player &$player){
+	public function playerInRoster(Player $player){
 		
 		if(is_array($this->tournament_players)){
 			foreach($this->tournament_players as $p){
@@ -67,7 +67,7 @@ class TournamentRoster extends Base {
 		return false;
 	}
 	
-	public function findPlayerInRoster(Player &$player){
+	public function findPlayerInRoster(Player $player){
 		if(is_array($this->tournament_players)){
 			foreach($this->tournament_players as $p){
 				/* @var $p TournamentPlayer */
@@ -93,7 +93,7 @@ class TournamentRoster extends Base {
 	
 	}
 	
-	public function addPlayerToRoster(Player &$player, $faction='', $agenda='', $place='', $points=0, $sos=0, $esos=0, $start_elo=0, $end_elo=0){
+	public function addPlayerToRoster(Player $player, $faction='', $agenda='', $place='', $points=0, $sos=0, $esos=0, $start_elo=0, $end_elo=0){
 		
 		$tp = new TournamentPlayer($this->db, $this->tournament_id, $player);
 

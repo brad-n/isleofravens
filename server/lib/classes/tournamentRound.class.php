@@ -29,7 +29,7 @@ class TournamentRound extends Base {
 		
 		$this->setDB($db);
 		$this->setTable('tournament_rounds');
-		$this->id = 'round_id';
+		$this->setID('round_id');
 		$this->fields = array('round_id', 'jp_game_id', 'tournament_id', 'round_number', 'winner_id', 'loser_id', 'is_draw', 'player_1_id', 'player_1_start_elo', 'player_1_end_elo', 'player_1_points', 'player_2_id', 'player_2_start_elo', 'player_2_end_elo', 'player_2_points', 'top_cut');
 		
 		if($round_id){

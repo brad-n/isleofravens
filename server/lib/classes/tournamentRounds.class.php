@@ -17,7 +17,7 @@ class TournamentRounds extends Base {
 		$this->setValue('tournament_id', $tournament_id);
 	}
 	
-	public function playerHasRound($round_number, Player &$player){
+	public function playerHasRound($round_number, Player $player){
 		
 		if(key_exists($round_number, $this->tournament_rounds)){
 			foreach($this->tournament_rounds[$round_number] as $r){
@@ -30,7 +30,7 @@ class TournamentRounds extends Base {
 		return false;
 	}
 	
-	public function isRoundFinished($round_number, Player &$player){
+	public function isRoundFinished($round_number, Player $player){
 		if(key_exists($round_number, $this->tournament_rounds)){
 			foreach($this->tournament_rounds[$round_number] as $r){
 				/* @var $r TournamentRound */
@@ -46,7 +46,7 @@ class TournamentRounds extends Base {
 		return false;
 	}
 	
-	public function findPlayerRound($round_number, Player &$player){
+	public function findPlayerRound($round_number, Player $player){
 	
 		if(key_exists($round_number, $this->tournament_rounds)){
 			foreach($this->tournament_rounds[$round_number] as $r){
@@ -104,7 +104,7 @@ class TournamentRounds extends Base {
 		
 	}
 	
-	public function addRoundResult($round_number, Player &$player_1, $player_1_points, Player &$player_2, $player_2_points){
+	public function addRoundResult($round_number, Player $player_1, $player_1_points, Player $player_2, $player_2_points){
 		
 		$tr = $this->findPlayerRound($round_number, $player_1);
 		
