@@ -3,8 +3,8 @@
 class Base {
 	
 	protected $db;
-	private $fields;
-	private $table;
+	protected $fields;
+	protected $table;
 	
 	public $id;
 	
@@ -16,6 +16,14 @@ class Base {
 	
 	public function setID($id){
 		$this->id = $id;
+	}
+	
+	public function setTable($table){
+		$this->table = $table;
+	}
+	
+	public function getTable(){
+		return $this->table;
 	}
 	
 	public function setFields($fields){
@@ -122,7 +130,7 @@ class Base {
 				$sql .= $field." = '".$this->__sanitize($this->{$field})."',";
 			}
 			$sql = substr($sql, 0,-1);
-			mysqli_query($this->db, $sql);
+			mysqli_query($this->db, $sql) or die("Error : <br/>".$sql."<br/>");
 			$this->{$this->id} = mysqli_insert_id($this->db);
 			
 			if($this->{$this->id} && method_exists($this, 'onAfterInsert')){
