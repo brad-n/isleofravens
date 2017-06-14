@@ -24,7 +24,7 @@ class TournamentPlayer extends Base {
 	public function __construct(&$db, $tournament_id = null, Player &$player){
 		
 		$this->setDB($db);
-		$this->table = 'tournament_roster';
+		$this->setTable('tournament_roster');
 		$this->id = 'roster_id';
 		$this->fields = array('roster_id', 'tournament_id', 'player_id', 'faction', 'agenda','place', 'points', 'wins', 'losses', 'sos', 'esos', 'start_elo', 'end_elo');
 		
@@ -50,7 +50,7 @@ class TournamentPlayer extends Base {
 	}
 	
 	public function getTournamentPlayer($tournament_id, $player_id){
-		$sql = "SELECT * FROM `".$this->table."` WHERE tournament_id = '".$tournament_id."' AND player_id = '".$player_id."'";
+		$sql = "SELECT * FROM `".$this->getTable()."` WHERE tournament_id = '".$tournament_id."' AND player_id = '".$player_id."'";
 		return $this->get($sql);
 	}
 

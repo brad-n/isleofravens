@@ -29,7 +29,7 @@ class Tournament extends Base {
 	function __construct(&$db, $tournament_id=null, $jp_tournament_id=null){
 		
 		$this->setDB($db);
-		$this->table = 'tournaments';
+		$this->setTable('tournaments');
 		$this->setID('tournament_id');
 		$this->setFields(array('tournament_id', 'jp_tournament_id', 'country', 'region', 'name', 'expansion_id', 'date_end', 'player_count', 'avg_elo', 'game_id'));
 		
@@ -48,12 +48,12 @@ class Tournament extends Base {
 	}
 	
 	public function getTournamentByID($id){
-		$sql = "SELECT * FROM `".$this->table."` WHERE tournament_id = '".$id."'";
+		$sql = "SELECT * FROM `".$this->getTable()."` WHERE tournament_id = '".$id."'";
 		return $this->get($sql);
 	}
 	
 	public function getTournamentByJPID($id){
-		$sql = "SELECT * FROM `".$this->table."` WHERE jp_tournament_id = '".$id."'";
+		$sql = "SELECT * FROM `".$this->getTable()."` WHERE jp_tournament_id = '".$id."'";
 		return $this->get($sql);
 	}
 
