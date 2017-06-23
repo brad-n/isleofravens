@@ -9,6 +9,7 @@
 // 'test/spec/**/*.js'
 
 var path = require('path');
+var pngquant = require('imagemin-pngquant');
 
 module.exports = function (grunt) {
 
@@ -88,7 +89,7 @@ module.exports = function (grunt) {
                 port: 9000,
                 // Change this to '0.0.0.0' to access the server from outside.
                 hostname: '0.0.0.0',
-                livereload: 35729
+                livereload: 35728
             },
             livereload: {
                 options: {
@@ -245,6 +246,13 @@ module.exports = function (grunt) {
         // The following *-min tasks produce minified files in the dist folder
         imagemin: {
             dist: {
+            	options: {                       // Target options
+                    optimizationLevel: 7,
+                    interlaced: true,
+                    progressive: true,
+                    svgoPlugins: [{ removeViewBox: false }],
+                    use: [pngquant()]
+                  },
                 files: [{
                     expand: true,
                     cwd: 'src/img',
@@ -322,7 +330,7 @@ module.exports = function (grunt) {
                       '.htaccess',
                       '*.html',
                       'views/{,*/}*.html',
-                      'bower_components/**/*',
+                      //'bower_components/**/*',
                       //'img/{,*/}*.{webp}',
                       'img/{,*/}*',
                       'js/{,*/}/*.html',
@@ -545,7 +553,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
       'update',
       'clean:dist',
-      'bowerInstall',      
+      'bowerInstall',   
       'useminPrepare',
       //'concurrent:dist',
       'autoprefixer',
@@ -560,7 +568,8 @@ module.exports = function (grunt) {
       'usemin',
       'htmlmin',
 		'version',
-      'copy:css_php'
+      'copy:css_php',
+      'imagemin'
     ]);
 
     grunt.registerTask('default', [

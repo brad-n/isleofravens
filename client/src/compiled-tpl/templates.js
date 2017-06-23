@@ -1,10 +1,137 @@
-angular.module('templates-main', ['js/player/player_details.html', 'js/player/player_nemesis.html', 'js/player/player_rival.html', 'js/player/player_rounds.html', 'js/player/player_tournaments.html', 'js/player/top_players.html', 'js/search/main.html']);
+angular.module('templates-main', ['js/contact/contact.html', 'js/faq/faq.html', 'js/header/header.tpl.html', 'js/player/faction_winloss.html', 'js/player/player_details.html', 'js/player/player_nemesis.html', 'js/player/player_rival.html', 'js/player/player_rounds.html', 'js/player/player_tournaments.html', 'js/player/top_players.html', 'js/search/main.html', 'js/search/search_form.tpl.html', 'js/search/search.html', 'js/whatsnew/whatsnew.html']);
+
+angular.module("js/contact/contact.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("js/contact/contact.html",
+    "<div class=\"col-lg-12 col-md-12 col-sm-12\">\n" +
+    "  <div class=\"alert alert-danger\" ng-show=\"error\">\n" +
+    "    <button class=\"close\" data-dismiss=\"alert\">x</button>\n" +
+    "    <strong>Error!</strong> An error occured while trying to send message.\n" +
+    "  </div>\n" +
+    "  <div class=\"alert alert-success\" ng-show=\"success\">\n" +
+    "    <button class=\"close\" data-dismiss=\"alert\">x</button>\n" +
+    "    <strong>Success! </strong> Your message was successfully sent.\n" +
+    "  </div>\n" +
+    "  <div ng-if=\"!success\">\n" +
+    "    <div class=\"form-group\" ng-class=\"{error: contactForm.name.$invalid}\">\n" +
+    "    <label>Full Name</label>\n" +
+    "    <input class=\"form-control\" type=\"text\" name=\"name\" ng-model=\"user.name\" required=\"required\" placeholder=\"Your name\">\n" +
+    "      <span class=\"help-block\" ng-show=\"contactForm.name.$error.required\">Required</span>\n" +
+    "    </div>\n" +
+    "    <div class=\"form-group\" ng-class=\"{error: contactForm.email.$invalid}\">\n" +
+    "      <label>Email</label>\n" +
+    "      <input class=\"form-control\" type=\"email\" name=\"email\" ng-model=\"user.email\" required=\"required\" placeholder=\"Your email address\">\n" +
+    "      <span class=\"help-block\" ng-show=\"contactForm.email.$error.required\">Required</span>\n" +
+    "      <span class=\"help-block\" ng-show=\"contactForm.email.$error.email\">Invalid email address</span>\n" +
+    "    </div>\n" +
+    "    <div class=\"form-group\" ng-class=\"{error: contactForm.message.$invalid}\">\n" +
+    "      <label>Message</label>\n" +
+    "      <textarea class=\"form-control\" rows=\"5\" name=\"message\" ng-model=\"user.message\" required=\"required\" placeholder=\"Your messsage\"></textarea>\n" +
+    "      <span class=\"help-inline\" ng-show=\"contactForm.message.$error.required\">Required</span>\n" +
+    "    </div>\n" +
+    "    <button class=\"btn btn-primary btn-lg btn-block\" ng-click=\"send()\" ng-disabled=\"contactForm.$invalid\">Send</button>\n" +
+    "    </div>\n" +
+    "</div>");
+}]);
+
+angular.module("js/faq/faq.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("js/faq/faq.html",
+    "<div class=\"panel-group\" id=\"accordion\">\n" +
+    "	<div class=\"panel panel-default\" ng-repeat=\"faq in faqs\">\n" +
+    "		<div class=\"panel-heading\">\n" +
+    "			<h4 class=\"panel-title\">\n" +
+    "				<a class=\"accordion-toggle\" ng-class=\"$index!=0?'collapsed':''\" href=\"javascript:void(0);\" data-toggle=\"collapse\" data-parent=\"#accordion\" data-target=\"#collapse{{faq.id}}\" aria-expanded=\"false\">{{faq.q}}</a>\n" +
+    "			</h4>\n" +
+    "		</div>\n" +
+    "		<div id=\"collapse{{faq.id}}\" class=\"panel-collapse collapse\"  ng-class=\"$index!=0?'':'in'\" aria-expanded=\"false\">\n" +
+    "			<div class=\"panel-body\">\n" +
+    "				<div ng-bind-html=\"toTrustedHTML(faq.a)\"></div>\n" +
+    "			</div>\n" +
+    "		</div>\n" +
+    "	</div>\n" +
+    "</div>");
+}]);
+
+angular.module("js/header/header.tpl.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("js/header/header.tpl.html",
+    "<nav class=\"navbar navbar-default navbar-fixed-top\">\n" +
+    "      <div class=\"container\">\n" +
+    "        <div class=\"navbar-header\">\n" +
+    "          <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n" +
+    "            <span class=\"sr-only\">Toggle navigation</span>\n" +
+    "            <span class=\"icon-bar\"></span>\n" +
+    "            <span class=\"icon-bar\"></span>\n" +
+    "            <span class=\"icon-bar\"></span>\n" +
+    "          </button>\n" +
+    "      		<a class=\"navbar-brand\" href=\"{{baseURL}}\">\n" +
+    "        		<img alt=\"Raven\" style=\"height:45px; width:auto; margin-top:-12px;\" src=\"img/raven.png\">\n" +
+    "      		</a>\n" +
+    "      		<b class=\"navbar-brand\"><a href=\"{{baseURL}}\" style=\"color:black; hover:black; active:black\">Isle of Ravens</a></b>\n" +
+    "        </div>\n" +
+    "        <div id=\"navbar\" class=\"navbar-collapse collapse\" aria-expanded=\"false\" style=\"height: 1px;\">\n" +
+    "          <ul class=\"nav navbar-nav navbar-right\">\n" +
+    "            <li active-link=\"active\" link=\"{{baseURL}}\"><a href=\"{{baseURL}}\">Home</a></li>\n" +
+    "			<li active-link=\"active\" link=\"{{baseURL}}faq\"><a href=\"{{baseURL}}faq\">FAQ</a></li>\n" +
+    "			<li active-link=\"active\" link=\"{{baseURL}}whats-new\"><a href=\"{{baseURL}}whats-new\">What's New</a></li>\n" +
+    "			<li active-link=\"active\" link=\"{{baseURL}}contact\"><a href=\"{{baseURL}}contact\">Contact</a></li>\n" +
+    "          </ul>\n" +
+    "        </div><!--/.nav-collapse -->\n" +
+    "      </div>\n" +
+    "</nav>\n" +
+    "\n" +
+    "\n" +
+    "\n" +
+    "<!--\n" +
+    "<nav class=\"navbar navbar-default\">\n" +
+    "	<div class=\"container-fluid\">\n" +
+    "    	<div class=\"navbar-header\">\n" +
+    "    		<h3 class=\"visible-xs pull-right\" style=\"margin-right:16px !important;\"><a href=\"{{baseURL}}\" style=\"color:black; hover:black; active:black\">Isle of Ravens</a></h3>\n" +
+    "      		<a class=\"navbar-brand\" href=\"{{baseURL}}\">\n" +
+    "        		<img alt=\"Raven\" style=\"height:45px; width:auto; margin-top:-6px;\" src=\"img/raven.png\">\n" +
+    "      		</a>\n" +
+    "    	</div>\n" +
+    "	<div class=\"col-xs-8 hidden-xs\" style=\"padding-bottom:4px !important;\">\n" +
+    "		<h2 style=\"margin-top:8px !important; margin-bottom:0px !important;\"><a href=\"{{baseURL}}\" style=\"color:black; hover:black; active:black\">Isle of Ravens</a></h2>\n" +
+    "		<i class=\"hidden-xs text-center\" >Elo ranking and tournament details for AGoT LCG</i>\n" +
+    "	</div>\n" +
+    "  \n" +
+    "  <div class=\"collapse navbar-collapse navbar-right\" id=\"bs-example-navbar-collapse-1\">\n" +
+    "	<ul class=\"nav navbar-nav\">\n" +
+    "		<li><a href=\"{{baseURL}}\" style=\"line-height:28px !important;\">Home</a></li>\n" +
+    "		<li><a href=\"{{baseURL}}faq\" style=\"line-height:28px !important;\">FAQ</a></li>\n" +
+    "		<li><a href=\"{{baseURL}}contact\" style=\"line-height:28px !important;\">Contact</a></li>\n" +
+    "	</ul>\n" +
+    "  </div>\n" +
+    "  </div>\n" +
+    "</nav>\n" +
+    "-->\n" +
+    "");
+}]);
+
+angular.module("js/player/faction_winloss.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("js/player/faction_winloss.html",
+    "<div>\n" +
+    "	<div class=\"col-xs-6\">\n" +
+    "		<b>Win/Loss by Faction</b>\n" +
+    "		<canvas id=\"fwl-{{player}}\"></canvas>\n" +
+    "	</div>\n" +
+    "\n" +
+    "	<div class=\"col-xs-4\">\n" +
+    "		<b>Win Distribution</b>\n" +
+    "		<div class=\"pie-group\">\n" +
+    "		    <canvas id=\"wd-outter-{{player}}\" class=\"pie-1\" height=\"300\" width=\"300\"></canvas>\n" +
+    "		    <canvas id=\"wd-{{player}}\" class=\"pie-2\" height=\"280\" width=\"280\"></canvas>\n" +
+    "		</div>\n" +
+    "		<div class=\"chartjs-tooltip\" id=\"wd-{{player}}-tooltip\">zxzx</div>\n" +
+    "	</div>\n" +
+    "</div>\n" +
+    "");
+}]);
 
 angular.module("js/player/player_details.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("js/player/player_details.html",
     "<div>\n" +
     "	<div class=\"panel-heading\">\n" +
-    "		<h3 class=\"panel-title\"><a href=\"player/{{player.player_id}}\">{{player.name}}</a> ({{player.elo}})</h3>\n" +
+    "		<h2><a href=\"player/{{player.player_id}}\">{{player.name}}</a> ({{player.elo}})</h2>\n" +
     "	</div>\n" +
     "  	<div class=\"panel-body\">\n" +
     "   		<div class=\"row\">\n" +
@@ -22,8 +149,19 @@ angular.module("js/player/player_details.html", []).run(["$templateCache", funct
     "   			</div>\n" +
     "			<div class=\"col-xs-6 col-md-3\">\n" +
     "   				<div class=\"col-xs-12\"><b>Win%</b></div>\n" +
-    "   				<div class=\"col-xs-12\">{{ ((player.wins/(player.wins+player.losses))*100).toFixed(2) }}%</div>\n" +
+    "   				<div class=\"col-xs-12\">\n" +
+    "   					<span ng-if=\"player.name == 'Gabriel Saravia'\">90%!!!</span>\n" +
+    "   					<span ng-if=\"player.name != 'Gabriel Saravia'\">{{ ((player.wins/(player.wins+player.losses))*100).toFixed(2) }}%</span>\n" +
+    "   					\n" +
+    "   				</div>\n" +
     "   			</div>\n" +
+    "   		</div>\n" +
+    "   		\n" +
+    "   		<div class=\"row\">\n" +
+    "   			<hr></hr>\n" +
+    "   			<faction-winloss player=\"player.player_id\">Loading ...</faction-winloss>\n" +
+    "   			<div class=\"clearfix\"></div>\n" +
+    "   			<hr></hr>\n" +
     "   		</div>\n" +
     "		   		\n" +
     "   		<div class=\"row\">\n" +
@@ -43,7 +181,6 @@ angular.module("js/player/player_details.html", []).run(["$templateCache", funct
     "		   			</div>\n" +
     "		   		</div>\n" +
     "	 		</div>\n" +
-    "	 		<hr></hr>\n" +
     "</div>");
 }]);
 
@@ -225,7 +362,7 @@ angular.module("js/player/top_players.html", []).run(["$templateCache", function
     "		</thead>\n" +
     "		<tbody>\n" +
     "			<tr ng-repeat=\"player in top_players\">\n" +
-    "				<td>{{$index+1}}</td>\n" +
+    "				<td>{{$index+1+pagination.offset}}</td>\n" +
     "				<td><a href=\"player/{{player.player_id}}\">{{player.name}}</a></td>\n" +
     "				<td>{{player.elo}}</td>\n" +
     "				<td>{{player.wins}}</td>\n" +
@@ -235,6 +372,9 @@ angular.module("js/player/top_players.html", []).run(["$templateCache", function
     "			</tr>\n" +
     "		</tbody>\n" +
     "	</table>\n" +
+    "	<div class=\"text-center\">\n" +
+    "		<ul ng-if=\"pagination.total\" uib-pagination total-items=\"pagination.total\" items-per-page=\"20\" ng-model=\"pagination.page\" max-size=\"10\" ng-change=\"changePage()\" class=\"pagination-sm\" boundary-link-numbers=\"true\"></ul>\n" +
+    "	</div>\n" +
     "</div>");
 }]);
 
@@ -249,32 +389,79 @@ angular.module("js/search/main.html", []).run(["$templateCache", function ($temp
     "}\n" +
     "</style>\n" +
     "\n" +
-    "\n" +
-    "<div class=\"panel panel-default\">\n" +
-    "  <div class=\"panel-body center-block text-center\">\n" +
-    "	<form class=\"form-inline\">\n" +
-    "	  <div class=\"form-group\">\n" +
-    "	      <input type=\"text\" class=\"form-control\" id=\"playerSearch\" name=\"name\" placeholder=\"Player Name\" ng-model=\"search_str\" />\n" +
-    "	  </div>\n" +
-    "	  <button ng-click=\"searchPlayer()\" class=\"btn btn-primary\">Search</button>\n" +
-    "	</form>\n" +
-    "  </div>\n" +
-    "</div>\n" +
+    "<div class=\"clearfix\"></div>\n" +
     "\n" +
     "\n" +
     "<div ng-if=\"loading\">Loading...</div>\n" +
     "\n" +
-    "<div ng-if=\"players.length <= 0 && !loading\">\n" +
-    "	<top-players count=\"25\">Loading...</top-players>\n" +
+    "<div ng-if=\"players.length <= 0 && !loading\" class=\"col-xs-12 col-md-12\">\n" +
+    "	<top-players page=\"page\">Loading...</top-players>\n" +
     "</div>\n" +
     "\n" +
     "<div ng-if=\"players.length > 0 && !loading\">\n" +
-    "\n" +
-    "	<div class=\"panel panel-default\">\n" +
-    "		<div ng-repeat=\"player in players\">\n" +
+    "	<div ng-repeat=\"player in players\">\n" +
+    "		<div class=\"panel panel-default\">\n" +
     "			<player-details player=\"player\"></player-details>\n" +
     "		</div>\n" +
+    "		<br/>\n" +
     "	</div>\n" +
     "</div>\n" +
     "");
+}]);
+
+angular.module("js/search/search_form.tpl.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("js/search/search_form.tpl.html",
+    "<div class=\"row\">\n" +
+    "	<div class=\"text-right\">\n" +
+    "		<form class=\"form-inline\">\n" +
+    "		  <div class=\"form-group\">\n" +
+    "		      <input type=\"text\" class=\"form-control\" id=\"playerSearch\" name=\"name\" placeholder=\"Player Name\" ng-model=\"ps.search_str\" />\n" +
+    "		  </div>\n" +
+    "		  <button ng-click=\"searchPlayer()\" class=\"btn btn-small btn-default\">Search</button>\n" +
+    "		</form>\n" +
+    "	</div>\n" +
+    "</div>");
+}]);
+
+angular.module("js/search/search.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("js/search/search.html",
+    "<style>\n" +
+    "[data-toggle=\"collapse\"].collapsed .if-not-collapsed {\n" +
+    "  display: none;\n" +
+    "}\n" +
+    "[data-toggle=\"collapse\"]:not(.collapsed) .if-collapsed {\n" +
+    "  display: none;\n" +
+    "}\n" +
+    "</style>\n" +
+    "\n" +
+    "<div ng-if=\"loading\">Loading...</div>\n" +
+    "\n" +
+    "<div ng-if=\"ps.players.length > 0 && !loading\">\n" +
+    "	\n" +
+    "		<div ng-repeat=\"player in ps.players\">\n" +
+    "			<div class=\"panel panel-default\">\n" +
+    "				<player-details player=\"player\"></player-details>\n" +
+    "			</div>\n" +
+    "			<br/>\n" +
+    "		</div>\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("js/whatsnew/whatsnew.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("js/whatsnew/whatsnew.html",
+    "<div class=\"panel-group\" id=\"accordion\">\n" +
+    "	<div class=\"panel panel-default\" ng-repeat=\"u in updates\">\n" +
+    "		<div class=\"panel-heading\">\n" +
+    "			<h4 class=\"panel-title\">\n" +
+    "				<a class=\"accordion-toggle\" ng-class=\"$index!=0?'collapsed':''\" href=\"javascript:void(0);\" data-toggle=\"collapse\" data-parent=\"#accordion\" data-target=\"#collapse{{u.date}}\" aria-expanded=\"false\">{{u.date}}</a>\n" +
+    "			</h4>\n" +
+    "		</div>\n" +
+    "		<div id=\"collapse{{u.date}}\" class=\"panel-collapse collapse\"  ng-class=\"$index!=0?'':'in'\" aria-expanded=\"false\">\n" +
+    "			<div class=\"panel-body\">\n" +
+    "				<div ng-bind-html=\"toTrustedHTML(u.update)\"></div>\n" +
+    "			</div>\n" +
+    "		</div>\n" +
+    "	</div>\n" +
+    "</div>");
 }]);

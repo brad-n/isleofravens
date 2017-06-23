@@ -1,0 +1,14 @@
+<div class="panel-group" id="accordion">
+	<div class="panel panel-default" ng-repeat="faq in faqs">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a class="accordion-toggle" ng-class="$index!=0?'collapsed':''" href="javascript:void(0);" data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{faq.id}}" aria-expanded="false">{{faq.q}}</a>
+			</h4>
+		</div>
+		<div id="collapse{{faq.id}}" class="panel-collapse collapse"  ng-class="$index!=0?'':'in'" aria-expanded="false">
+			<div class="panel-body">
+				<div ng-bind-html="toTrustedHTML(faq.a)"></div>
+			</div>
+		</div>
+	</div>
+</div>

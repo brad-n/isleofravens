@@ -94,7 +94,7 @@ class TournamentRounds extends Base {
 		$tr->setValue('player_2_id', $player_2->player_id);
 		$tr->setValue('player_2_start_elo', $player_2->elo);
 		
-		$tr->save();
+		$tr->save(true);
 		
 		if(!key_exists($tr->round_number, $this->tournament_rounds)){
 			$this->tournament_rounds[$tr->round_number] = array();
@@ -113,17 +113,24 @@ class TournamentRounds extends Base {
 
 			$tr->setValue('winner_id', $player_1->player_id);
 			$tr->setValue('loser_id', $player_2->player_id);
-			$tr->saveNewELO($player_1, $player_2);
+			
+			if($player_2->player_id > 0){
+				$tr->saveNewELO($player_1, $player_2);
+			}
 			
 		}elseif($player_2_points > $player_1_points){	//player 2 won
-			
 			$tr->setValue('loser_id', $player_1->player_id);
 			$tr->setValue('winner_id', $player_2->player_id);
-			$tr->saveNewELO($player_2, $player_1);
+			
+			if($player_2->player_id > 0){
+				$tr->saveNewELO($player_2, $player_1);
+			}
 			
 		}else{
 			//it's a draw
-			$tr->saveNewELO($player_1, $player_2, true);
+			if($player_2->player_id > 0){
+				$tr->saveNewELO($player_1, $player_2, true);
+			}
 		}
 
 		$tr->setValue('player_1_end_elo', $player_1->elo);

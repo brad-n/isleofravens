@@ -100,7 +100,7 @@ foreach($tournaments as $tournament){
 		if(!is_object($e_player_2)){
 			$e_player_2= new stdClass();
 			$e_player_2->player = new Player($db);
-			$e_player_2->player->setPlayerByJPID($game->p1_id);
+			$e_player_2->player->setPlayerByJPID($game->p2_id);
 		}
 		
 		

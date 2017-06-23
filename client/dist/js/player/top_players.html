@@ -14,7 +14,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="player in top_players">
-				<td>{{$index+1}}</td>
+				<td>{{$index+1+pagination.offset}}</td>
 				<td><a href="player/{{player.player_id}}">{{player.name}}</a></td>
 				<td>{{player.elo}}</td>
 				<td>{{player.wins}}</td>
@@ -24,4 +24,7 @@
 			</tr>
 		</tbody>
 	</table>
+	<div class="text-center">
+		<ul ng-if="pagination.total" uib-pagination total-items="pagination.total" items-per-page="20" ng-model="pagination.page" max-size="10" ng-change="changePage()" class="pagination-sm" boundary-link-numbers="true"></ul>
+	</div>
 </div>

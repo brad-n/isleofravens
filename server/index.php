@@ -15,6 +15,9 @@ require_once 'lib/classes/tournamentPlayer.class.php';
 require_once 'lib/classes/tournamentRounds.class.php';
 require_once 'lib/classes/tournamentRound.class.php';
 
+
+use Mailgun\Mailgun;
+
 $app = new \Slim\App;
 $GLOBALS['db'] = mysqli_connect('localhost', $cfg['db_user'], $cfg['db_pass'], 'isleofravens');
 
@@ -42,16 +45,18 @@ $app->post('/player/search/', function (Request $request, Response $response) {
 		
 		$players = $pObj->searchForPlayer($name);
 		
-		foreach($players as $player){
-			$player->nemeses = $player->getPlayerNemeses();
-			$player->rivals = $player->getPlayerRivals();
-			//$player->tournaments = $tObj->getPlayerTournaments($player);
-			foreach($player->tournaments as $tournament){
-				//$tournament->entry = $tournament->roster->findPlayerInRoster($player);
+		if(is_array($players)){
+			foreach($players as $player){
+				$player->nemeses = $player->getPlayerNemeses();
+				$player->rivals = $player->getPlayerRivals();
 			}
+		}else{
+			return return_json(array('msg'=>'No players matching search!'));
 		}
 		
 		return return_json($players);
+	}else{
+		return return_json(array('msg'=>'No search string provided!'));
 	}
 		
 });
@@ -93,12 +98,12 @@ $app->get('/player/{playerID}', function (Request $request, Response $response) 
 	
 });
 
-$app->get('/player/top/{count}', function (Request $request, Response $response) {
+$app->get('/player/top/', function (Request $request, Response $response) {
 	
-	$count= $request->getAttribute('count');
+	$opts = $request->getQueryParams();
 	$player = new Player($GLOBALS['db'], $id);
 	
-	$players = $player->getTopPlayers($count);
+	$players = $player->getAllPlayers($opts);
 	
 	return return_json($players);
 	
@@ -113,6 +118,57 @@ $app->get('/player/tournaments/{player_id}', function (Request $request, Respons
 	$tournaments = $tObj->getPlayerTournaments($player);
 	return return_json($tournaments);
 		
+});
+
+
+$app->get('/player/faction/winloss/{player_id}', function (Request $request, Response $response) {
+	
+	$player_id = $request->getAttribute('player_id');
+	$obj = new Base();
+	$obj->setDB($GLOBALS['db']);
+	
+	$res = $obj->getAll("SELECT faction, count(round_id) as entries, SUM(CASE WHEN winner_id = ".$obj->__sanitize($player_id)." THEN 1 ELSE 0 END) as wins, SUM(CASE WHEN loser_id = ".$obj->__sanitize($player_id)." THEN 1 ELSE 0 END) as losses from tournament_roster
+					INNER JOIN tournament_rounds as tr ON tr.tournament_id = tournament_roster.tournament_id AND (tr.winner_id = ".$obj->__sanitize($player_id)." OR tr.loser_id = ".$obj->__sanitize($player_id).")
+					WHERE player_id = ".$obj->__sanitize($player_id)." AND faction != ''
+					GROUP BY faction
+					ORDER BY faction");
+	
+	$res2 = $obj->getAll("SELECT faction, agenda, count(round_id) as entries, SUM(CASE WHEN winner_id = ".$obj->__sanitize($player_id)." THEN 1 ELSE 0 END) as wins, SUM(CASE WHEN loser_id = ".$obj->__sanitize($player_id)." THEN 1 ELSE 0 END) as losses from tournament_roster
+					INNER JOIN tournament_rounds as tr ON tr.tournament_id = tournament_roster.tournament_id AND (tr.winner_id = ".$obj->__sanitize($player_id)." OR tr.loser_id = ".$obj->__sanitize($player_id).")
+					WHERE player_id = ".$obj->__sanitize($player_id)." AND faction != ''
+					GROUP BY faction, agenda
+					ORDER BY faction");
+	
+	return return_json(array('faction_win_loss' => $res, 'faction_agenda_win' => $res2));
+	
+});
+
+/**
+ * General Routes
+ */
+
+$app->post('/send-mail/', function(Request $request, Response $response){
+	
+	$body = json_decode($request->getBody());
+	
+	$from = $body->name;
+	$email = $body->email;
+	$message = $body->message;
+	
+	if(!empty($email) && !empty($message)){
+		$mg = Mailgun::create('key-6dca8801f66b2b013c0da637b387dec5');
+		$mg->messages()->send('mg.isleofravens.com', [
+				'from'    => $from." <".$email.">",
+				'to'      => 'digitalgenesis@gmail.com',
+				'subject' => 'IoR Contact Sumbission',
+				'text'    => $message
+		]);
+		
+		return return_json(array('result'=>1));
+	}else{
+		return return_json(array('result'=>0));
+	}
+	
 });
 
 

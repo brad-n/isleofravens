@@ -41,7 +41,7 @@ class Player extends Base {
 	}
 	
 	public function searchForPlayer($name){
-		$q = "Select * FROM players WHERE name LIKE '%".mysqli_real_escape_string($this->db,$name)."%'";
+		$q = "Select * FROM players WHERE name LIKE '%".mysqli_real_escape_string($this->db,$name)."%' LIMIT 0,10";
 		$results = $this->getAll($q);
 		
 		$return = array();
@@ -117,6 +117,35 @@ class Player extends Base {
 		$result = $this->getAll($sql);
 		
 		return $result;
+		
+	}
+	
+	public function getAllPlayers($opts=array()){
+		
+		if(empty($opts['limit'])){
+			$opts['limit'] = 25;
+		}
+		if(empty($opts['offset'])){
+			$opts['offset'] = 0;
+		}
+		if(empty($opts['order_by'])){
+			$opts['order_by'] = 'elo';
+		}
+		
+		$sql = "SELECT *,
+					(SELECT faction FROM tournament_roster as tr WHERE player_id = players.player_id GROUP BY faction ORDER BY count(faction) desc limit 0,1) as most_played_faction
+				FROM players
+				ORDER BY ".$this->__sanitize($opts['order_by'])." desc, name asc LIMIT ".$this->__sanitize($opts['offset']).", ".$this->__sanitize($opts['limit']);
+		error_log($sql);
+		$result['players'] = $this->getAll($sql);
+
+		if(!$opts['have_total']){
+			$sql = "SELECT count(player_id) as total FROM players";
+			$result['total'] = $this->get($sql);
+		}
+		
+		return $result;
+		
 		
 	}
 	

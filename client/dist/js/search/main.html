@@ -7,30 +7,21 @@
 }
 </style>
 
-
-<div class="panel panel-default">
-  <div class="panel-body center-block text-center">
-	<form class="form-inline">
-	  <div class="form-group">
-	      <input type="text" class="form-control" id="playerSearch" name="name" placeholder="Player Name" ng-model="search_str" />
-	  </div>
-	  <button ng-click="searchPlayer()" class="btn btn-primary">Search</button>
-	</form>
-  </div>
-</div>
-
+<div class="clearfix"></div>
 
 <div ng-if="loading">Loading...</div>
 
 <div ng-if="players.length <= 0 && !loading">
-	<top-players count="25">Loading...</top-players>
+	<top-players page="page">Loading...</top-players>
 </div>
 
 <div ng-if="players.length > 0 && !loading">
 
-	<div class="panel panel-default">
+	
 		<div ng-repeat="player in players">
-			<player-details player="player"></player-details>
+			<div class="panel panel-default">
+				<player-details player="player"></player-details>
+			</div>
+			<br/>
 		</div>
-	</div>
 </div>

@@ -54,7 +54,7 @@ class Base {
 	public function get($query){
 		
 		if(isset($GLOBALS['debug'])){
-			echo $query;
+			echo $query."<br/>";
 		}
 		
 		$result = mysqli_query($this->db, $query);
@@ -75,7 +75,7 @@ class Base {
 	public function getAll($query){
 	
 		if(isset($GLOBALS['debug'])){
-			echo $query;
+			echo $query."<br/>";
 		}
 	
 		$result = mysqli_query($this->db, $query);
@@ -111,7 +111,7 @@ class Base {
 		return true;
 	}
 	
-	public function save(){
+	public function save($ignore=false){
 		if(method_exists($this, 'onBeforeSave')){
 			if(!$this->onBeforeSave()){
 				return false;
@@ -119,7 +119,7 @@ class Base {
 		}
 
 		//are we adding or updating?
-		if($this->getID()){
+		if($this->{$this->getID()}){
 			$sql = "UPDATE ".$this->table." SET ";
 			foreach($this->fields as $field){
 				$sql .= $field." = '".$this->__sanitize($this->{$field})."',";
@@ -128,13 +128,18 @@ class Base {
 			$sql .= " WHERE `".$this->id."` = ".$this->{$this->id};
 			$result = mysqli_query($this->db, $sql);
 		}else{
-			$sql = "INSERT INTO ".$this->table." SET ";	
+			//if($ignore){
+				$sql = "INSERT IGNORE INTO ".$this->table." SET ";
+			//}else{
+//				$sql = "INSERT INTO ".$this->table." SET ";
+			//}
+				
 			foreach($this->fields as $field){
 				$sql .= $field." = '".$this->__sanitize($this->{$field})."',";
 			}
 			$sql = substr($sql, 0,-1);
 			mysqli_query($this->db, $sql) or die("Error : <br/>".$sql."<br/>");
-			$this->setID(mysqli_insert_id($this->db));
+			$this->setValue($this->getID(),mysqli_insert_id($this->db));
 			
 			if($this->{$this->id} && method_exists($this, 'onAfterInsert')){
 				$this->onAfterInsert();
@@ -143,7 +148,7 @@ class Base {
 		}
 		
 		if(isset($GLOBALS['debug'])){
-			echo $sql."<br/>";
+			echo $sql."<br/><br/>";
 		}
 		
 		if(method_exists($this, 'onAfterSave')){

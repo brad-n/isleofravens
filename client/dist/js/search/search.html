@@ -1,0 +1,20 @@
+<style>
+[data-toggle="collapse"].collapsed .if-not-collapsed {
+  display: none;
+}
+[data-toggle="collapse"]:not(.collapsed) .if-collapsed {
+  display: none;
+}
+</style>
+
+<div ng-if="loading">Loading...</div>
+
+<div ng-if="ps.players.length > 0 && !loading">
+	
+		<div ng-repeat="player in ps.players">
+			<div class="panel panel-default">
+				<player-details player="player"></player-details>
+			</div>
+			<br/>
+		</div>
+</div>

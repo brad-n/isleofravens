@@ -1,5 +1,4 @@
-var app = angular.module('isleOfRavensApp',
-  ['ngRoute', 'restangular']);
+var app = angular.module('isleOfRavensApp', ['ngRoute', 'restangular', 'templates-main', 'ui.bootstrap']);
 
 app.run(['$rootScope', function(rs){
 	rs.baseURL = cfg.baseHref;
@@ -14,9 +13,29 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 	    	templateUrl: "js/search/main.html",
 	        controller: 'MainController',
 	    })
+	    .when("/search", {
+	    	templateUrl: "js/search/search.html",
+	        controller: 'SearchController',
+	    })
+	    .when("/page/:page", {
+	    	templateUrl: "js/search/main.html",
+	        controller: 'MainController',
+	    })
 	    .when("/player/:playerID", {
 	    	templateUrl: "js/search/main.html",
 	        controller: 'MainController',
+	    })
+	    .when("/faq", {
+	    	templateUrl: "js/faq/faq.html",
+	        controller: 'FaqController',
+	    })
+	    .when("/contact", {
+	    	templateUrl: "js/contact/contact.html",
+	    	controller: 'ContactController',
+	    })
+	    .when("/whats-new", {
+	    	templateUrl: "js/whatsnew/whatsnew.html",
+	    	controller: 'WhatsNewController',
 	    })
         .otherwise({redirectTo: "/"});
 }])
