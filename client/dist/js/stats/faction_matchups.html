@@ -1,0 +1,59 @@
+<div>
+	<div class="card col-xs-12" style="min-width:800px;">
+		<h3>Faction Matchups</h3>
+		
+		<form class="form-inline">
+		
+			<div class="form-group">
+				
+    			<label>Faction</label>
+    			<div class="clearfix"></div>
+				<select class="form-control" ng-model="search.faction">
+					<option ng-repeat="faction in factions" ng-selected="faction.faction == search.faction">{{faction.faction}}</option>
+				</select>
+			</div>
+			
+			<div class="form-group">
+				<label>Agenda</label>
+				<div class="clearfix"></div>
+				<select class="form-control" ng-model="search.agenda">
+					<option ng-repeat="agenda in agendas" ng-selected="agenda.agenda == search.agenda">{{agenda.agenda}}</option>
+				</select>
+			</div>
+		
+		  	<div class="form-group">
+		  		<label>From</label>
+		  		<div class="clearfix"></div>
+				<input type="text" class="form-control" id="date" name="date" placeholder="From Date" ng-model="search.date" />
+			</div>
+			<div class="form-group">
+		  		<label>Match Threshold</label>
+		  		<div class="clearfix"></div>
+				<input type="text" class="form-control" id="date" name="date" ng-model="threshold" />
+			</div>
+		  	<button ng-click="loadFactionMatchups()" class="btn btn-small btn-default">Go</button>
+		</form>
+		
+		<table class="table table-responsive table-stripped table-hover">
+			<tr>
+				<td>Faction</td>
+				<td>Agenda</td>
+				<td>Matchups</td>
+				<td>Wins</td>
+				<td>Losses</td>
+				<td>Win Rate</td>
+			</tr>
+			
+			<tr ng-repeat="entry in matchups" ng-if="entry.matches >= threshold">
+				<td>{{entry.opponent_faction}}</td>
+				<td>{{entry.opponent_agenda}}</td>
+				<td><a href="javascript:void(0);" ng-click="show(search.faction, search.agenda, entry.opponent_faction, entry.opponent_agenda);">{{entry.matches}}</a></td>
+				<td>{{entry.wins}}</td>
+				<td>{{entry.losses}}</td>
+				<td>{{(entry.wins / entry.matches) * 100 | number : 2}}%</td>
+			</tr>
+			
+		</table>
+		
+	</div>
+</div>

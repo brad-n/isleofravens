@@ -75,9 +75,36 @@ foreach($tournaments as $tournament){
 			$Player->setValue('date_created', $Tourney->date_end);
 			$Player->save();
 		}
-
+		
 		if(!$Tourney->roster->playerInRoster($Player)){
+			
+			$GLOBALS['current']['entry'] = $entry;
+			
+			/*
+			 * We don't need to this really it just throws a warning, but we're trying to narrow in on some other bugs
+			 * so we're just doing to house keeping.
+			 */
+			if(!isset($entry->topx)){
+				$entry->topx = 0;
+			}
+			if(!isset($entry->points)){
+				$entry->points = 0;
+			}
+			if(!isset($entry->sos)){
+				$entry->sos = 0;
+			}
+			if(!isset($entry->esos)){
+				$entry->esos = 0;
+			}
+			if(!isset($entry->faction)){
+				$entry->faction = '';
+			}
+			if(!isset($entry->agenda)){
+				$entry->agenda = '';
+			}
+			
 			$Tourney->roster->addPlayerToRoster($Player, $entry->faction, $entry->agenda, $entry->topx,$entry->points,$entry->sos,$entry->esos, $Player->elo);
+			
 		}
 	}
 	
@@ -88,177 +115,55 @@ foreach($tournaments as $tournament){
 	
 	$Tourney->getRounds();
 	
-	foreach($games as $game){
-		
-		//get our roster entries for each player
-		$e_player_1 = $Tourney->roster->findPlayerInRosterByJPID($game->p1_id);
-		$e_player_2 = $Tourney->roster->findPlayerInRosterByJPID($game->p2_id);
-		
-		//in some cases like a bye, our player will not be in the roster
-		//so we need to check or that, and fetch with the main player object in that case.
-		if(!is_object($e_player_1)){
-			$e_player_1 = new stdClass();
-			$e_player_1->player = new Player($db);
-			$e_player_1->player->setPlayerByJPID($game->p1_id);
-		}
-		if(!is_object($e_player_2)){
-			$e_player_2= new stdClass();
-			$e_player_2->player = new Player($db);
-			$e_player_2->player->setPlayerByJPID($game->p2_id);
-		}
-		
-		
-		//do we have a record for this player in this round?
-		if(!$Tourney->rounds->playerHasRound($game->tournament_round, $e_player_1->player)){
-			$Tourney->rounds->addRound($game->tournament_round,$e_player_1->player,$e_player_2->player, $game->topx, $game->game_id);
-		}
-		
-		if(!$Tourney->rounds->isRoundFinished($game->tournament_round, $e_player_1->player)){
-			//we have a round, do we have a winner?
-			$Tourney->rounds->addRoundResult($game->tournament_round, $e_player_1->player, $game->p1_points, $e_player_2->player, $game->p2_points);
-		}
-		
-	}
-	
-	$Tourney->saveEndingElo();
-	
-}
-	
-	/*
-	
-	//this is the first method of doing all this before rebuilding all of our classes
-	//to be full object-orianted.
-	
-	//check to see if tournament already in database
-	$tourney = $tapi->getTournamentByJPID($tournament->tournament_id);
-	
-	//if it's not, add it
-	if(empty($tourney)){
-		$tournament_id = $tapi->addtournament($tournament);
-		
-		if(!$tournament_id){
-			echo "Error Adding tournament!!!<br/>";
-			exit();
-		}
-	}else{
-		$tournament_id = $tourney['id'];
-	}
-
-	//now lets get the roster for this tournament
-	$roster = json_decode(file_get_contents("http://thejoustingpavilion.com/api/v2/json/tournaments/".$tournament->tournament_id));
-	
-
-	
-	$i = 0;
-	foreach($roster as $entry){
-		
-		$i++; //our source data is ordered by place, so we track that when adding to the roster
-		
-		//check to see if this player exists
-		$Player = new Player($db, null, $entry->player_name);
-
-		//if we didn't find the player, set some more details then save them
-		if(!$Player->player_id){
-			$Player->jp_player_id = $entry->player_id;
-			$Player->date_created = $tournament->end_time;
-			$Player->save();
-		}
-		
-		$Roster = new TournamentRoster($db);
-		
-		//if the player isn't in our roster, we will set the details and save them
-		if(!$Roster->playerInRoster($tournament_id, $Player->player_id)){
+	//sometimes a tournament will not have rounds (imported from Tome or something)
+	//so we check for that before trying to calculate ELO
+	if(!empty($games)){
+		foreach($games as $game){
 			
-			$data['roster_id'];
-			$data['tournament_id'] = $tournament_id;
-			$data['player_id'] = $Player->player_id;
-			$data['faction'] = $entry->faction;
-			$data['agenda'] = $entry->agenda;
-			$data['place'] = $i;
-			$data['points'] = 0;
-			$data['sos'] = $entry->sos;
-			$data['esos'] = $entry->esos;
+			//get our roster entries for each player
+			$e_player_1 = $Tourney->roster->findPlayerInRosterByJPID($game->p1_id);
+			$e_player_2 = $Tourney->roster->findPlayerInRosterByJPID($game->p2_id);
 			
-			if($entry->topx < 257){
-				$data['top_cut'] = $entry->topx;
+			
+			
+			//in some cases like a bye, our player will not be in the roster
+			//so we need to check for that, and fetch with the main player object in that case.
+			if(!is_object($e_player_1)){
+				$e_player_1 = new TournamentPlayer($db, null, new Player($db));
+				$e_player_1->player = new Player($db);
+				$e_player_1->player->setPlayerByJPID($game->p1_id);
+			}
+			if(!is_object($e_player_2)){
+				$e_player_2 = new TournamentPlayer($db, null, new Player($db));
+				$e_player_2->player = new Player($db);
+				$e_player_2->player->setPlayerByJPID($game->p2_id);
 			}
 			
-			$data['sos'] = $entry->sos;
-			$data['esos'] = $entry->esos;
 			
-			$Roster->setRoster($data);
-			$Roster->save();
+			//do we have a record for this player in this round?
+			if(!$Tourney->rounds->playerHasRound($game->tournament_round, $e_player_1->player)){
+				$Tourney->rounds->addRound($game->tournament_round,$e_player_1->player,$e_player_2->player, $game->topx, $game->game_id);
+			}
 			
-			//record this players new entry
-			$Player->entries++;
-			$Player->save();
+			if(!$Tourney->rounds->isRoundFinished($game->tournament_round, $e_player_1->player)){
+				//we have a round, do we have a winner?
+				$Tourney->rounds->addRoundResult($game->tournament_round, $e_player_1->player, $game->p1_points, $e_player_2->player, $game->p2_points, $game);
+				
+				if($game->p1_points > $game->p2_points){
+					$e_player_1->addPlayerWin($e_player_1->player);
+					$e_player_2->addPlayerLoss($e_player_2->player);
+				}elseif($game->p1_points< $game->p2_points){
+					$e_player_1->addPlayerLoss($e_player_1->player);
+					$e_player_2->addPlayerWin($e_player_2->player);
+				}
+			}
+			
 			
 		}
+		
+		$Tourney->saveEndingElo();
 	}
 	
-	$games = json_decode(file_get_contents("http://thejoustingpavilion.com/api/v2/json/games?tournament_id=".$tournament->tournament_id));
-	
-	//loop over all games, store in database
-	foreach($games as $game){
-		
-		$round = new TournamentRound($db);
-		
-		
-		//if these players have not played this round, save it to the database.
-		//determine the winner
-		if($game->p1_points > $game->p2_points){
-			$winner = 'p1';
-			$loser = 'p2';
-		}elseif($game->p1_points < $game->p2_points){
-			$winner = 'p2';
-			$loser = 'p1';
-		}else{
-			echo "couldn't determine winner???<br/>";
-			echo "<pre>";
-			print_r($game);
-			echo "</pre>";
-			continue;
-		}
-		
-		$wp = new Player($db, null, $game->{$winner."_name"});
-		$lp = new Player($db, null, $game->{$loser."_name"});
-		
-		
-		if(!$round->isRoundRecorded($wp->player_id, $lp->player_id, $game->tournament_round,$tournament_id)){
-		
-			$data['round_id'] = '';
-			$data['jp_game_id'] = $game->game_id;
-			$data['tournament_id'] = $tournament_id;
-			$data['round_number'] = $game->tournament_round;
-			$data['winner_id'] = $wp->player_id;
-			$data['winner_points'] = $game->{$winner."_points"};
-			$data['loser_id'] = $lp->player_id;
-			$data['loser_points'] = $game->{$loser."_points"};
-			$data['top_cut'] = $game->topx;
-			
-			$round->setRound($data);
-			
-			
-			
-			$round->save();
-			
-			$PAPI = new PlayerAPI();
-			//record win/loss for players
-			$PAPI->calculateELO($wp, $lp);
-			$wp->wins++;
-			$lp->losses++;
-			
-			$wp->save();
-			$lp->save();
-			
-		}
-		$GLOBALS['debug'] = 0;
-		
-		
-	}
-	*/
-
-
-
+}
 
 ?>

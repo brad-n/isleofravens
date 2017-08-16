@@ -104,7 +104,7 @@ class TournamentRounds extends Base {
 		
 	}
 	
-	public function addRoundResult($round_number, Player $player_1, $player_1_points, Player $player_2, $player_2_points){
+	public function addRoundResult($round_number, Player $player_1, $player_1_points, Player $player_2, $player_2_points, $game){
 		
 		$tr = $this->findPlayerRound($round_number, $player_1);
 		
@@ -112,7 +112,12 @@ class TournamentRounds extends Base {
 		if($player_1_points > $player_2_points){	//player 1 won
 
 			$tr->setValue('winner_id', $player_1->player_id);
+			$tr->setValue('winner_faction', $game->p1_faction);
+			$tr->setValue('winner_agenda', $game->p1_agenda);
+			
 			$tr->setValue('loser_id', $player_2->player_id);
+			$tr->setValue('loser_faction', $game->p2_faction);
+			$tr->setValue('loser_agenda', $game->p2_agenda);
 			
 			if($player_2->player_id > 0){
 				$tr->saveNewELO($player_1, $player_2);
@@ -120,7 +125,12 @@ class TournamentRounds extends Base {
 			
 		}elseif($player_2_points > $player_1_points){	//player 2 won
 			$tr->setValue('loser_id', $player_1->player_id);
+			$tr->setValue('loser_faction', $game->p1_faction);
+			$tr->setValue('loser_agenda', $game->p1_agenda);
+			
 			$tr->setValue('winner_id', $player_2->player_id);
+			$tr->setValue('winner_faction', $game->p2_faction);
+			$tr->setValue('winner_agenda', $game->p2_agenda);
 			
 			if($player_2->player_id > 0){
 				$tr->saveNewELO($player_2, $player_1);

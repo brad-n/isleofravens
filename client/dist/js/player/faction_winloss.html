@@ -1,1 +1,15 @@
-<div id="fwl-{{player}}"></div>
+<div>
+	<div class="col-xs-6">
+		<b>Win/Loss by Faction</b>
+		<canvas id="fwl-{{player}}"></canvas>
+	</div>
+
+	<div class="col-xs-4">
+		<b>Win Distribution</b>
+		<div class="pie-group">
+		    <canvas id="wd-outter-{{player}}" class="pie-1" height="300" width="300"></canvas>
+		    <canvas id="wd-{{player}}" class="pie-2" height="280" width="280"></canvas>
+		</div>
+		<div class="chartjs-tooltip" id="wd-{{player}}-tooltip">zxzx</div>
+	</div>
+</div>

@@ -27,6 +27,22 @@ app.factory('Api', ['Restangular', '$rootScope', '$q', '$location', '$http',
 			loadFactionWinLoss : function(playerID){
 				return Rest.one('player/faction/winloss/'+playerID).get(playerID);
 			},
+			loadFactionEntries : function(){
+				return Rest.all('stats/factions/entries/').get('');
+			},
+			loadFactionWins : function(){
+				return Rest.all('stats/factions/wins/').get('');
+			},
+			loadFactionMatchups : function(opts){
+				return Rest.all('stats/faction/matchups/').post(opts);
+			},
+			loadFactionMatchupDetails : function(opts){
+				return Rest.all('stats/faction/matchup_details/').post(opts);
+			},
+			loadFactions : function(){
+				return Rest.all('factions/').get('');
+			},
+			
 			sendMail : function(opts){
 				console.log('api : ');
 				console.log(opts);

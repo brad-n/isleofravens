@@ -9,19 +9,18 @@
 
 <div class="clearfix"></div>
 
+
 <div ng-if="loading">Loading...</div>
 
-<div ng-if="players.length <= 0 && !loading">
+<div ng-if="players.length <= 0 && !loading" class="col-xs-12 col-md-12">
 	<top-players page="page">Loading...</top-players>
 </div>
 
 <div ng-if="players.length > 0 && !loading">
-
-	
-		<div ng-repeat="player in players">
-			<div class="panel panel-default">
-				<player-details player="player"></player-details>
-			</div>
-			<br/>
+	<div ng-repeat="player in players">
+		<div class="panel panel-default">
+			<player-details player="player"></player-details>
 		</div>
+		<br/>
+	</div>
 </div>

@@ -11,10 +11,14 @@
 
 <div ng-if="ps.players.length > 0 && !loading">
 	
-		<div ng-repeat="player in ps.players">
+		<div ng-repeat="player in ps.players" class="card">
 			<div class="panel panel-default">
-				<player-details player="player"></player-details>
+				<div ng-if="ps.players.length > 1">
+					<div class="panel-heading">
+						<h2><a href="player/{{player.player_id}}">{{player.name}}</a> ({{player.elo}})</h2>
+					</div>
+				</div>
+				<player-details ng-if="ps.players.length == 1" player="player"></player-details>
 			</div>
-			<br/>
 		</div>
 </div>

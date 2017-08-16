@@ -21,7 +21,7 @@ class TournamentPlayer extends Base {
 	/** @var Player */
 	public $player;
 	
-	public function __construct(&$db, $tournament_id = null, Player &$player){
+	public function __construct(&$db, $tournament_id = null, Player $player){
 		
 		$this->setDB($db);
 		$this->setTable('tournament_roster');
@@ -52,6 +52,24 @@ class TournamentPlayer extends Base {
 	public function getTournamentPlayer($tournament_id, $player_id){
 		$sql = "SELECT * FROM `".$this->getTable()."` WHERE tournament_id = '".$tournament_id."' AND player_id = '".$player_id."'";
 		return $this->get($sql);
+	}
+	
+	public function addPlayerWin(Player $player){
+		
+		$this->wins++;
+		if($this->roster_id){
+			$this->save();
+		}
+		
+	}
+	
+	public function addPlayerLoss(Player $player){
+		
+		$this->losses++;
+		if($this->roster_id){
+			$this->save();
+		}
+		
 	}
 
 	public function onBeforeSave(){

@@ -158,7 +158,13 @@ class Base {
 	}
 	
 	function __sanitize($input){
-		return mysqli_real_escape_string($this->db, $input);
+		if((!empty($input) || $input == 0) && !is_object($input) && !is_array($input)){
+			return mysqli_real_escape_string($this->db, $input);
+		}elseif(is_object($input) || is_array($input)){
+			return $input;
+		}else{
+			return '';
+		}
 	}
 	
 }

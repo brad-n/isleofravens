@@ -1,0 +1,14 @@
+<div class="panel-group" id="accordion">
+	<div class="panel panel-default" ng-repeat="u in updates">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a class="accordion-toggle" ng-class="$index!=0?'collapsed':''" href="javascript:void(0);" data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{u.date}}" aria-expanded="false">{{u.date}}</a>
+			</h4>
+		</div>
+		<div id="collapse{{u.date}}" class="panel-collapse collapse"  ng-class="$index!=0?'':'in'" aria-expanded="false">
+			<div class="panel-body">
+				<div ng-bind-html="toTrustedHTML(u.update)"></div>
+			</div>
+		</div>
+	</div>
+</div>

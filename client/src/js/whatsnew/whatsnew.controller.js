@@ -6,6 +6,16 @@ function ($scope, Rest, $routeParams, $route, $location, $q, Api, $sce) {
 	
 	$scope.updates = [
 		{
+			date:'2017-08-01',
+			update:"<ol>" +
+					"<li>Fixed an issue with the data processor.  This was causing game results to lock in a loop and get recorded multiple times.</li>" +
+					"<li>Pulled a fresh data set to fix errors from above and catch the latest name changes/merges.</li>" +
+					"<li>Added additional information to the backend for some cool future features involving pulling stats.</li>" +
+					"<li>Added a stats page to show some general stats (right now it's just faction entries YTD).</li>" +
+					"</ol>"
+					
+		},
+		{
 			date:'2017-06-18',
 			update:"<ol>" +
 					"<li>Added pagination for top players, allowing seeing all players in the system</li>" +

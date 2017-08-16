@@ -4,8 +4,8 @@
 		<span class="if-not-collapsed">Hide Tournaments</span>
   	</a>
 	<div class="collapse text-left" id="collapseTournaments-{{player.player_id}}">
-  		<div class="well">
-  			<div class="row" ng-repeat="t in tournaments">
+  		<div>
+  			<div class="row card" ng-repeat="t in tournaments">
 	  			<h3 class="text-left">{{t.name}}</h3>
     			
 				<div class="row">

@@ -10,7 +10,11 @@ class TournamentRound extends Base {
 	public $tournament_id;
 	public $round_number;
 	public $winner_id;
+	public $winner_faction;
+	public $winner_agenda;
 	public $loser_id;
+	public $loser_faction;
+	public $loser_agenda;
 	public $is_draw;
 	public $player_1_id;
 	public $player_1_start_elo;
@@ -30,7 +34,7 @@ class TournamentRound extends Base {
 		$this->setDB($db);
 		$this->setTable('tournament_rounds');
 		$this->setID('round_id');
-		$this->fields = array('round_id', 'jp_game_id', 'tournament_id', 'round_number', 'winner_id', 'loser_id', 'is_draw', 'player_1_id', 'player_1_start_elo', 'player_1_end_elo', 'player_1_points', 'player_2_id', 'player_2_start_elo', 'player_2_end_elo', 'player_2_points', 'top_cut');
+		$this->fields = array('round_id', 'jp_game_id', 'tournament_id', 'round_number', 'winner_id', 'winner_faction', 'winner_agenda', 'loser_id', 'loser_faction', 'loser_agenda', 'is_draw', 'player_1_id', 'player_1_start_elo', 'player_1_end_elo', 'player_1_points', 'player_2_id', 'player_2_start_elo', 'player_2_end_elo', 'player_2_points', 'top_cut');
 		
 		if($round_id){
 			$sql = "Select * FROM `".$this->getTable()."` WHERE `".$this->id."` = ".$round_id;

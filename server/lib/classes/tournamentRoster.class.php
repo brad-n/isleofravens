@@ -15,10 +15,16 @@ class TournamentRoster extends Base {
 		
 		$this->setDB($db);
 		$this->tournament_players = array();
-		$this->setValue('tournament_players', Array());
+		
+		$this->setTable('tournament_roster');
+		$this->setID('roster_id');
+		
+		$this->setValue('tournament_players', array());
 		$this->setValue('tournament_id', $tournament_id);
+		
 		$this->setFields(array('roster_id', 'tournament_id', 'player_id', 'faction', 'agenda', 'place', 'points', 'wins', 'losses', 'sos', 'esos', 'start_elo', 'end_elo'));
 		
+		$this->tournament_players = array();
 		
 		if($this->tournament_id){
 			$roster = $this->getAll("SELECT * FROM tournament_roster WHERE tournament_id = '".$this->tournament_id."'");
